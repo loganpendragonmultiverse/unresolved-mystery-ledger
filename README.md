@@ -34,3 +34,7 @@ Markdown groups entries into open, resolved, and intentionally open sections. JS
 Run `python -m pip install -e ".[dev]"`, then `ruff format --check .`, `ruff check .`, `pytest`, and `python -m build`. Contributions are accepted through reviewed pull requests. Version 1.0.0 is feature-complete for the documented structured-ledger scope; maintenance prioritizes deterministic output, validation, and backward compatibility.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [SUPPORT.md](SUPPORT.md). Licensed under the [MIT License](LICENSE).
+
+## More open-source projects
+
+This project is part of the [Logan Pendragon Forge open-source collection](https://www.loganpendragonforge.com/open-source/).
