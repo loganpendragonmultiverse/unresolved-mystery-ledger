@@ -9,20 +9,26 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from .core import LedgerError, load_ledger, markdown, report
+from .editor import render_html
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="mystery-ledger")
     parser.add_argument("ledger", type=Path)
     parser.add_argument("--through")
-    parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
+    parser.add_argument("--format", choices=("markdown", "json", "html"), default="markdown")
+    parser.add_argument("--stale-after", type=int, default=3)
     parser.add_argument("--output", type=Path)
     try:
         args = parser.parse_args(argv)
-        result = report(load_ledger(args.ledger), through=args.through)
+        result = report(
+            load_ledger(args.ledger), through=args.through, stale_after=args.stale_after
+        )
         rendered = (
             json.dumps(result, indent=2) + "\n" if args.format == "json" else markdown(result)
         )
+        if args.format == "html":
+            rendered = render_html(result)
         if args.output:
             if args.output.exists():
                 raise LedgerError(f"Output already exists: {args.output}")
