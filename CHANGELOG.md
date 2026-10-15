@@ -2,6 +2,8 @@
 
 ## 1.2.0 - Unreleased
 
+- Include newly visible legacy undated resolutions in snapshot comparisons, explicitly marking the date as unknown and preserving single-snapshot behavior.
+
 - Use `--compare-from "Chapter 1" --through "Chapter 2" --format json` to compare two explicit inclusive milestone snapshots.
 
 ## 1.1.0 - 2026-09-07

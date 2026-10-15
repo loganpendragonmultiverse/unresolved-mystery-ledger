@@ -231,6 +231,22 @@ def compare_snapshots(
                 event["kind"]
             ]
             new[key].append(dict(event))
+    # A legacy resolution can omit its date. Record visibility, not an inferred date.
+    for item in after["mysteries"]:
+        if (
+            item["id"] not in prior_ids
+            and item["status"] == "resolved"
+            and not item.get("resolved_at")
+        ):
+            new["resolutions"].append(
+                {
+                    "mystery_id": item["id"],
+                    "kind": "resolution",
+                    "text": item["resolution"],
+                    "at": None,
+                    "date_status": "undated",
+                }
+            )
     return {
         "version": 1,
         "from": start,
@@ -260,7 +276,8 @@ def comparison_markdown(payload: dict[str, Any]) -> str:
         for item in items:
             identifier = item.get("mystery_id", item.get("id"))
             text = item.get("text", item.get("title"))
-            lines.append(f"- {item['at']} — {identifier}: {text}")
+            at = item["at"] if item["at"] is not None else "Undated"
+            lines.append(f"- {at} — {identifier}: {text}")
         if not items:
             lines.append("_None._")
     return "\n".join(lines).rstrip() + "\n"

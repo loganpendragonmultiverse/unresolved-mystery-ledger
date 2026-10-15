@@ -9,3 +9,6 @@ Run the complete existing suite plus the new regression fixtures. Confirm the do
 ## 1.2.0 acceptance
 
 Exercise the optional input with the full regression suite, including validation, inclusive boundaries, deterministic ordering and legacy default behavior. Use `--compare-from "Chapter 1" --through "Chapter 2" --format json` to compare two explicit inclusive milestone snapshots. JSON or Markdown lists newly visible mysteries, clues, promises and resolutions with before/after status counts and stable per-kind totals. Equal boundaries give no new items; reversed or unknown boundaries are rejected. Events in newly visible mysteries are included only if visible at the end boundary. This compares authored visibility within one supplied ledger, not historical edits or inferred narrative history. HTML editing remains the single-snapshot workflow.
+
+
+Newly visible resolved legacy entries without resolved_at (or with null) include their resolution text in newly_visible.resolutions, with at: null and date_status: undated. Markdown labels these resolutions Undated. This records visibility by the end snapshot without asserting an exact resolution date. Already-visible undated resolutions are not counted again; legacy single-snapshot reports and timelines are unchanged.

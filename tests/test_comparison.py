@@ -48,3 +48,47 @@ def test_cli(tmp_path, capsys):
     assert "snapshot comparison" in capsys.readouterr().out
     assert main([str(p), "--compare-from", "c1"]) == 2
     assert main([str(p), "--compare-from", "c1", "--through", "c2", "--format", "html"]) == 2
+
+
+@pytest.mark.parametrize("date_fields", [{}, {"resolved_at": None}])
+def test_newly_visible_legacy_undated_resolution(date_fields):
+    data = {
+        "version": 1,
+        "milestones": ["c1", "c2", "c3"],
+        "mysteries": [
+            {
+                "id": "legacy",
+                "title": "Legacy",
+                "introduced": "c2",
+                "status": "resolved",
+                "resolution": "Solved",
+                **date_fields,
+            }
+        ],
+    }
+    before = copy.deepcopy(data)
+    comparison = compare_snapshots(data, start="c1", end="c2")
+    assert comparison["before_counts"]["resolved"] == 0
+    assert comparison["after_counts"]["resolved"] == 1
+    assert comparison["newly_visible_counts"]["resolutions"] == 1
+    assert comparison["newly_visible"]["resolutions"] == [
+        {
+            "mystery_id": "legacy",
+            "kind": "resolution",
+            "text": "Solved",
+            "at": None,
+            "date_status": "undated",
+        }
+    ]
+    assert comparison["newly_visible_counts"]["mysteries"] == 1
+    assert compare_snapshots(data, start="c2", end="c3")["newly_visible_counts"]["resolutions"] == 0
+    assert compare_snapshots(data, start="c1", end="c1")["newly_visible_counts"]["resolutions"] == 0
+    assert data == before
+    from mystery_ledger.core import comparison_markdown, report
+
+    assert "Undated" in comparison_markdown(comparison)
+    snapshot = report(data, through="c2")
+    assert snapshot["mysteries"][0]["resolution"] == "Solved"
+    assert snapshot["mysteries"][0].get("resolved_at") is None
+    assert [event["kind"] for event in snapshot["timeline"]] == ["introduction"]
+    assert report(data, through="c1")["mysteries"] == []
