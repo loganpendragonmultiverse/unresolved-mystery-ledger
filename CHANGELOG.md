@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 - Unreleased
+
+- Use `--compare-from "Chapter 1" --through "Chapter 2" --format json` to compare two explicit inclusive milestone snapshots.
+
 ## 1.1.0 - 2026-09-07
 
 - Add a local mystery editor, chapter timeline, clue-to-promise links and author-controlled stale-thread/orphan-clue review.

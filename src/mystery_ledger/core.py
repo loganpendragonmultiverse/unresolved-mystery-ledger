@@ -195,3 +195,72 @@ def markdown(payload: dict[str, Any]) -> str:
         ]
     )
     return "\n".join(lines).rstrip() + "\n"
+
+
+def compare_snapshots(
+    ledger: dict[str, Any], *, start: str, end: str, stale_after: int = 3
+) -> dict[str, Any]:
+    """Compare two inclusive explicit boundaries; never infer past edits."""
+    validate(ledger)
+    milestones = ledger["milestones"]
+    if start not in milestones or end not in milestones:
+        raise LedgerError("Unknown comparison milestone.")
+    if milestones.index(start) > milestones.index(end):
+        raise LedgerError("Comparison start must not follow end.")
+    before = report(ledger, through=start, stale_after=stale_after)
+    after = report(ledger, through=end, stale_after=stale_after)
+    prior_ids = {item["id"] for item in before["mysteries"]}
+    new: dict[str, list[dict[str, Any]]] = {
+        "mysteries": [
+            {"id": item["id"], "title": item["title"], "at": item["introduced"]}
+            for item in after["mysteries"]
+            if item["id"] not in prior_ids
+        ],
+        "clues": [],
+        "promises": [],
+        "resolutions": [],
+    }
+    # The timeline is built from visible data only; membership preserves duplicates and order.
+    for event in after["timeline"]:
+        if event["kind"] not in ("clue", "promise", "resolution"):
+            continue
+        if event["mystery_id"] not in prior_ids or milestones.index(event["at"]) > milestones.index(
+            start
+        ):
+            key = {"clue": "clues", "promise": "promises", "resolution": "resolutions"}[
+                event["kind"]
+            ]
+            new[key].append(dict(event))
+    return {
+        "version": 1,
+        "from": start,
+        "through": end,
+        "before_counts": before["counts"],
+        "after_counts": after["counts"],
+        "newly_visible": new,
+        "newly_visible_counts": {key: len(value) for key, value in new.items()},
+    }
+
+
+def comparison_markdown(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Milestone snapshot comparison",
+        "",
+        f"From **{payload['from']}** through **{payload['through']}**",
+        "",
+        "| Status | Before | After |",
+        "| --- | ---: | ---: |",
+    ]
+    for state in sorted(payload["before_counts"]):
+        lines.append(
+            f"| {state} | {payload['before_counts'][state]} | {payload['after_counts'][state]} |"
+        )
+    for kind, items in payload["newly_visible"].items():
+        lines.extend(["", f"## Newly visible {kind} ({len(items)})", ""])
+        for item in items:
+            identifier = item.get("mystery_id", item.get("id"))
+            text = item.get("text", item.get("title"))
+            lines.append(f"- {item['at']} — {identifier}: {text}")
+        if not items:
+            lines.append("_None._")
+    return "\n".join(lines).rstrip() + "\n"
