@@ -1,6 +1,11 @@
 # Changelog
 
-## 1.2.0 - Unreleased
+## 1.2.1
+
+- Correct released documentation labels; package behavior is unchanged.
+- Preserve the original v1.2.0 tags and artifacts. This patch supplies corrected documentation in new artifacts.
+
+## 1.2.0 - 2026-10-15
 
 - Include newly visible legacy undated resolutions in snapshot comparisons, explicitly marking the date as unknown and preserving single-snapshot behavior.
 
