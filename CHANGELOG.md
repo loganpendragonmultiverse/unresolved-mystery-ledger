@@ -7,6 +7,7 @@
 - Preserve reports created by another writer or dangling output symlinks with exclusive creation.
 - Return actionable CLI errors for report-directory and file-write failures.
 - Include development and testing instructions in source distributions.
+- Install the documented mypy check with the development dependency extra.
 
 ## 1.2.1
 
