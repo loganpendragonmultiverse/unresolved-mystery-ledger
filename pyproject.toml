@@ -28,3 +28,7 @@ target-version = "py310"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--cov=mystery_ledger --cov-branch --cov-report=term-missing --cov-fail-under=90"
+
+[tool.setuptools.data-files]
+"share/doc/unresolved-mystery-ledger" = ["README.md", "CHANGELOG.md", "DEVELOPMENT.md", "TESTING.md"]
+"share/doc/unresolved-mystery-ledger/examples" = ["examples/novel.json"]

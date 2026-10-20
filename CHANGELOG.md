@@ -6,7 +6,7 @@
 - Prevent the editor from downloading blank identities or whitespace-only resolutions.
 - Preserve reports created by another writer or dangling output symlinks with exclusive creation.
 - Return actionable CLI errors for report-directory and file-write failures.
-- Include development and testing instructions in source distributions.
+- Package all four handoff documents and tracked examples in wheels and source distributions.
 - Install the documented mypy check with the development dependency extra.
 
 ## 1.2.1

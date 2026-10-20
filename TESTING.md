@@ -16,3 +16,5 @@ Newly visible resolved legacy entries without resolved_at (or with null) include
 ## 1.2.2 regression acceptance
 
 Exercise malformed structured text, report-write errors, concurrent output creation and source immutability. Verify installed wheel and source-distribution imports, run the full suite with the unchanged 90% combined statement/branch coverage gate, and exercise the documented commands outside the source tree.
+
+Before release, require the unchanged portfolio archive binding to match every source/test/doc/example/license/metadata member, then verify installed documentation and examples under `share/doc/unresolved-mystery-ledger` against tracked source bytes.

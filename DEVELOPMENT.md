@@ -20,3 +20,5 @@ Newly visible resolved legacy entries without resolved_at (or with null) include
 ## 1.2.2 maintenance contract
 
 Keep report destinations exclusive and malformed structured inputs actionable. Preserve milestone order, inclusive comparisons, source immutability and the documented spoiler boundary.
+
+Before release, require the unchanged portfolio archive binding to match every source/test/doc/example/license/metadata member, then verify installed documentation and examples under `share/doc/unresolved-mystery-ledger` against tracked source bytes.
