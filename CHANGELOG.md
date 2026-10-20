@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.2 - 2026-10-20
+
+- Reject malformed ledger titles, IDs and non-text resolution fields before HTML rendering.
+- Preserve reports created by another writer or dangling output symlinks with exclusive creation.
+- Return actionable CLI errors for report-directory and file-write failures.
+- Include development and testing instructions in source distributions.
+
 ## 1.2.1
 
 - Correct released documentation labels; package behavior is unchanged.

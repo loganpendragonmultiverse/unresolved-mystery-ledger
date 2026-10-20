@@ -12,3 +12,7 @@ Exercise the optional input with the full regression suite, including validation
 
 
 Newly visible resolved legacy entries without resolved_at (or with null) include their resolution text in newly_visible.resolutions, with at: null and date_status: undated. Markdown labels these resolutions Undated. This records visibility by the end snapshot without asserting an exact resolution date. Already-visible undated resolutions are not counted again; legacy single-snapshot reports and timelines are unchanged.
+
+## 1.2.2 regression acceptance
+
+Exercise malformed structured text, report-write errors, concurrent output creation and source immutability. Verify installed wheel and source-distribution imports, run the full suite with the unchanged 90% branch-coverage gate, and exercise the documented commands outside the source tree.

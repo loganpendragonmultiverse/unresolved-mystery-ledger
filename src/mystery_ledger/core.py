@@ -22,14 +22,22 @@ def load_ledger(path: Path) -> dict[str, Any]:
 
 
 def validate(payload: Any) -> dict[str, Any]:
-    if not isinstance(payload, dict) or payload.get("version") != 1:
+    if (
+        not isinstance(payload, dict)
+        or type(payload.get("version")) is not int
+        or payload["version"] != 1
+    ):
         raise LedgerError("Ledger must be a version 1 JSON object.")
+    if "title" in payload and (
+        not isinstance(payload["title"], str) or not payload["title"].strip()
+    ):
+        raise LedgerError("Ledger title must be non-empty text.")
     milestones = payload.get("milestones")
     entries = payload.get("mysteries")
     if (
         not isinstance(milestones, list)
         or not milestones
-        or not all(isinstance(x, str) and x for x in milestones)
+        or not all(isinstance(x, str) and x.strip() for x in milestones)
     ):
         raise LedgerError("milestones must be a non-empty list of names.")
     if len(milestones) != len(set(milestones)):
@@ -46,16 +54,19 @@ def _validate_entry(entry: Any, milestones: list[str], ids: set[str]) -> None:
     if not isinstance(entry, dict):
         raise LedgerError("Each mystery must be an object.")
     identifier = entry.get("id")
-    if not isinstance(identifier, str) or not identifier or identifier in ids:
+    if not isinstance(identifier, str) or not identifier.strip() or identifier in ids:
         raise LedgerError("Mystery IDs must be non-empty and unique.")
     ids.add(identifier)
-    if not isinstance(entry.get("title"), str) or not entry["title"]:
+    if not isinstance(entry.get("title"), str) or not entry["title"].strip():
         raise LedgerError(f"Mystery {identifier} needs a title.")
     if entry.get("introduced") not in milestones:
         raise LedgerError(f"Mystery {identifier} has an unknown introduced milestone.")
     if not isinstance(entry.get("status"), str) or entry.get("status") not in STATES:
         raise LedgerError(f"Mystery {identifier} has an invalid status.")
-    if entry["status"] == "resolved" and not entry.get("resolution"):
+    resolution = entry.get("resolution")
+    if resolution is not None and not isinstance(resolution, str):
+        raise LedgerError(f"Mystery {identifier} resolution must be text.")
+    if entry["status"] == "resolved" and (not resolution or not resolution.strip()):
         raise LedgerError(f"Resolved mystery {identifier} needs a resolution.")
     if entry.get("resolved_at") is not None and entry["resolved_at"] not in milestones:
         raise LedgerError(f"Mystery {identifier} has an unknown resolution milestone.")

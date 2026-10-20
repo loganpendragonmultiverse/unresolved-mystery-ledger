@@ -46,15 +46,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.format == "html":
             rendered = render_html(result)
         if args.output:
-            if args.output.exists():
-                raise LedgerError(f"Output already exists: {args.output}")
             args.output.parent.mkdir(parents=True, exist_ok=True)
-            args.output.write_text(rendered, encoding="utf-8")
+            try:
+                with args.output.open("x", encoding="utf-8") as stream:
+                    stream.write(rendered)
+            except FileExistsError as exc:
+                raise LedgerError(f"Output already exists: {args.output}") from exc
             print(args.output.resolve())
         else:
             print(rendered, end="")
         return 0
-    except LedgerError as exc:
+    except (LedgerError, OSError, UnicodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

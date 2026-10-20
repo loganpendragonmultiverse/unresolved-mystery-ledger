@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "unresolved-mystery-ledger"
-version = "1.2.1"
+version = "1.2.2"
 description = "Validate and report mysteries, clues, promises, and resolutions in long-form fiction."
 readme = "README.md"
 requires-python = ">=3.10"
