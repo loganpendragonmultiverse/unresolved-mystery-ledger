@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.2 - 2026-10-20
+
+- Reject malformed ledger titles, IDs and non-text resolution fields before HTML rendering.
+- Prevent the editor from downloading blank identities or whitespace-only resolutions.
+- Preserve reports created by another writer or dangling output symlinks with exclusive creation.
+- Return actionable CLI errors for report-directory and file-write failures.
+- Package all four handoff documents and tracked examples in wheels and source distributions.
+- Install the documented mypy check with the development dependency extra.
+
 ## 1.2.1
 
 - Correct released documentation labels; package behavior is unchanged.

@@ -16,3 +16,9 @@ Use `--compare-from "Chapter 1" --through "Chapter 2" --format json` to compare 
 
 
 Newly visible resolved legacy entries without resolved_at (or with null) include their resolution text in newly_visible.resolutions, with at: null and date_status: undated. Markdown labels these resolutions Undated. This records visibility by the end snapshot without asserting an exact resolution date. Already-visible undated resolutions are not counted again; legacy single-snapshot reports and timelines are unchanged.
+
+## 1.2.2 maintenance contract
+
+Keep report destinations exclusive and malformed structured inputs actionable. Preserve milestone order, inclusive comparisons, source immutability and the documented spoiler boundary.
+
+Before release, require the unchanged portfolio archive binding to match every source/test/doc/example/license/metadata member, then verify installed documentation and examples under `share/doc/unresolved-mystery-ledger` against tracked source bytes.

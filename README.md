@@ -59,3 +59,9 @@ Newly visible resolved legacy entries without resolved_at (or with null) include
 ## Version 1.2.1: documentation correction
 
 Version 1.2.0 was released on October 15, 2026. Version 1.2.1 corrects its release labels without changing behavior. The original v1.2.0 tag and downloadable artifacts remain unchanged; use v1.2.1 for the corrected packaged documentation.
+
+## 1.2.2 maintenance
+
+Ledger titles, mystery identities and resolution text are validated before reporting or HTML generation. A supplied resolution must be text; resolved entries require non-whitespace resolution text.
+
+Report output is created as a new file, refusing existing destinations including dangling symlinks. Filesystem errors return exit status 2. This prevents ordinary overwrite races at the output leaf; it does not promise atomic protection against hostile replacement of parent directories. Source ledgers are never rewritten.
