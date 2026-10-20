@@ -46,6 +46,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.format == "html":
             rendered = render_html(result)
         if args.output:
+            if args.output.is_symlink():
+                raise LedgerError(f"Output already exists: {args.output}")
             args.output.parent.mkdir(parents=True, exist_ok=True)
             try:
                 with args.output.open("x", encoding="utf-8") as stream:

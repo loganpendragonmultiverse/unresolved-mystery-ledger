@@ -69,3 +69,16 @@ def test_output_created_by_another_writer_is_preserved(tmp_path, monkeypatch, ca
     assert main([str(source), "--output", str(output)]) == 2
     assert output.read_text() == "another writer"
     assert "already exists" in capsys.readouterr().err
+
+
+def test_output_link_is_refused_before_opening(tmp_path, monkeypatch, capsys):
+    source = tmp_path / "source.json"
+    source.write_text(json.dumps(sample()), encoding="utf-8")
+    output = tmp_path / "report.md"
+    real_is_symlink = type(output).is_symlink
+    monkeypatch.setattr(
+        type(output), "is_symlink", lambda path: path == output or real_is_symlink(path)
+    )
+    assert main([str(source), "--output", str(output)]) == 2
+    assert not output.exists()
+    assert "already exists" in capsys.readouterr().err

@@ -3,6 +3,7 @@
 ## 1.2.2 - 2026-10-20
 
 - Reject malformed ledger titles, IDs and non-text resolution fields before HTML rendering.
+- Prevent the editor from downloading blank identities or whitespace-only resolutions.
 - Preserve reports created by another writer or dangling output symlinks with exclusive creation.
 - Return actionable CLI errors for report-directory and file-write failures.
 - Include development and testing instructions in source distributions.
